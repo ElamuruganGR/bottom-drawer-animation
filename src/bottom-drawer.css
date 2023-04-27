@@ -1,0 +1,31 @@
+.container {
+    bottom: 0;
+    position: fixed;
+}
+.dragHandler {
+    height: 5vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:after {
+        content: "";
+        width: 10vw;
+        height: 0.5vh;
+        background-color: #000;
+        transform: translateY(-50%);
+    }
+}
+.drawerContent {
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.closer {
+    height: 5vh;
+    width: 100vw;
+}
+.transition {
+    transition: all 200ms ease-in-out; 
+}
