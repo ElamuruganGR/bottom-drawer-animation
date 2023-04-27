@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .App-logo {
@@ -19,9 +23,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 1vmin);
   color: white;
   height: 60vh;
+  padding: 0 5vh;
+  margin-bottom: 10vh;
 }
 
 .App-link {
@@ -37,10 +43,7 @@
   }
 }
 
-.open {
-  transform: translateY(0);
-  /* bottom: 0; */
-}
-.close {
-  transform: translateY(30vh);
+.trigger {
+  height: 5vh;
+  margin-top: -8vh;
 }

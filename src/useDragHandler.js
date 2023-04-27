@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const getEventY = (event) => event.targetTouches[0].clientY;
 
-export const useDragHandler = () => {
+export const useDragHandler = (setOpen) => {
   // containerRef is what the bottom-drawer wrapper / container to transform its y position
   const containerRef = useRef(null);
   // dragHandleRef - user interactive button which can be dragged - used to find the position of the touch and make the container to follows the dragging
@@ -14,18 +14,19 @@ export const useDragHandler = () => {
   // isDragging - stores boolean based on dragging - useful to add transition animation (eg: ease effect)
   const [isDragging, setIsDragging] = useState(false);
   // drawerInView - stores boolean based on touchdrop
-  const [drawerInView, setDrawerInView] = useState(true);
+  // const [drawerInView, setOpen] = useState(true);
 
   // Dragging animation
   const animateDrawer = useCallback(
     (y) => {
-      if (containerRef.current && drawerInView) {
+      console.log("isDragging:", isDragging)
+      if (containerRef.current) {
         window.requestAnimationFrame(() => {
           containerRef.current.style.transform = `translateY(${y})`;
         });
       }
     },
-    [drawerInView]
+    []
   );
 
   const start = useCallback((event) => {
@@ -38,10 +39,12 @@ export const useDragHandler = () => {
   const move = useCallback(
     (event) => {
       const eventY = getEventY(event);
-      console.log("move:", eventY);
+      console.log("move:", eventY, isDragging);
       const y = eventY - touchStartYCoord.current;
       translateY.current = y;
-      animateDrawer(`${y}px`);
+      // The if condition restricts the upper drag
+      if (y > 0)
+        animateDrawer(`${y}px`);
     },
     [animateDrawer]
   );
@@ -53,10 +56,10 @@ export const useDragHandler = () => {
         animateDrawer("100%");
         // Timeout 200ms matches the animation delay mentioned in css
         // Without setting timeout here throws error in animate drawer saying null.style
-        // this is because setDrawerInView runs faster than animateDrawer which takes 200ms
-        // Hence mobile Drawer is removed from the dome based on setDrawerInView
+        // this is because setOpen runs faster than animateDrawer which takes 200ms
+        // Hence mobile Drawer is removed from the dome based on setOpen
         setTimeout(() => {
-          setDrawerInView(false);
+          setOpen(false);
         }, 200);
       } else {
         animateDrawer("0%");
@@ -80,5 +83,5 @@ export const useDragHandler = () => {
       }
     };
   }, [start, move, drop]);
-  return [containerRef, dragHandleRef, isDragging, drawerInView];
+  return [containerRef, dragHandleRef, isDragging];
 };
